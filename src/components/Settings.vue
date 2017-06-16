@@ -36,7 +36,7 @@
         <mu-icon value="keyboard_arrow_right" slot="right"/>
       </mu-list-item>
       <mu-list-item title="支持">
-        <mu-icon value="favorite" color="red" slot="left"/>
+        <mu-icon value="favorite" color="pinkA200" slot="left"/>
         <mu-icon value="panorama_fish_eye" color="white" slot="right"/>
         <mu-icon value="keyboard_arrow_right" slot="right"/>
       </mu-list-item>
