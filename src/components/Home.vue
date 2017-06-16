@@ -1,10 +1,5 @@
 <template>
-  <div class="hello">
-    <mu-paper class="master-nav">
-      <mu-bottom-nav :value="masterNav" shift @change="navChange">
-        <mu-bottom-nav-item v-for="item in navItems" :key="item.value" :value="item.value" :title="item.title" :icon="item.icon"></mu-bottom-nav-item>
-      </mu-bottom-nav>
-    </mu-paper>
+  <div class="home">
     <div class="vsteper-container">
       <mu-stepper :active-step="activeStep" orientation="vertical">
         <mu-step>
@@ -54,30 +49,7 @@
 export default {
   data () {
     return {
-      activeStep: 0,
-      masterNav: 'home',
-      navItems: [
-        {
-          value: 'home',
-          title: 'Home',
-          icon: 'home'
-        },
-        {
-          value: 'notification',
-          title: 'Notification',
-          icon: 'notifications'
-        },
-        {
-          value: 'history',
-          title: 'History',
-          icon: 'access_time'
-        },
-        {
-          value: 'settings',
-          title: 'Settings',
-          icon: 'settings'
-        }
-      ]
+      activeStep: 0
     }
   },
   computed: {
@@ -86,9 +58,6 @@ export default {
     }
   },
   methods: {
-    navChange: function (nav) {
-      this.masterNav = nav
-    },
     handleNext () {
       this.activeStep++
     },
@@ -106,20 +75,10 @@ export default {
 <style scoped>
 .vsteper-container {
   max-width: 380px;
-  max-height: 400px;
   margin: 16px auto;
 }
 .step-button {
   margin-top: 12px;
   margin-right: 12px;
-}
-.master-nav {
-  bottom: 0;
-  width: 100%;
-}
-@media (max-width: 768px) {
-  .master-nav {
-    position: absolute;
-  }
 }
 </style>
