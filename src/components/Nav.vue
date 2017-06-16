@@ -42,6 +42,7 @@ export default {
   methods: {
     navChange: function (nav) {
       this.masterNav = nav
+      this.$router.replace({name: nav})
     }
   }
 }
