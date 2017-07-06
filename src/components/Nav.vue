@@ -1,7 +1,7 @@
 <template>
   <div>
     <mu-paper class="nav-master">
-      <mu-bottom-nav :value="navFocus" shift @change="navChange">
+      <mu-bottom-nav :value="navFocus" @change="navChange">
         <!--<mu-bottom-nav-item v-for="item in navItems" :key="item.value" :value="item.value" :title="item.title" :icon="item.icon"></mu-bottom-nav-item>-->
         <mu-bottom-nav-item :key="navItems[0].value" :value="navItems[0].value" :title="navItems[0].title" :icon="navItems[0].icon"></mu-bottom-nav-item>
         <mu-bottom-nav-item :key="navItems[1].value" :value="navItems[1].value" :title="navItems[1].title" :icon="navItems[1].icon">
