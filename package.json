@@ -17,7 +17,8 @@
     "muse-ui": "^2.0.3",
     "vue": "^2.3.3",
     "vue-loader": "^12.2.1",
-    "vue-router": "^2.3.1"
+    "vue-router": "^2.3.1",
+    "vue2-leaflet": "0.0.51"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",

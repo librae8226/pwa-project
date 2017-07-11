@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+<!--
     <mu-stepper :active-step="activeStep" orientation="vertical">
       <mu-step>
         <mu-step-label>
@@ -40,15 +41,43 @@
     <p v-if="finished" style="margin: 32px 46px">
       都完成啦! <a href="javascript:;" @click="reset">重置</a>
     </p>
+-->
+
+    <v-map :zoom=13 :center="[31.24536, 121.46685]">
+      <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
+      <v-marker :lat-lng="[31.24536, 121.46685]"></v-marker>
+    </v-map>
   </div>
 </template>
 
 <script>
+import { Map, TileLayer, Marker } from 'vue2-leaflet'
 export default {
   data () {
     return {
+      ws: null,
       activeStep: 0
     }
+  },
+  watch: {
+    activeStep: function (newVal, oldVal) {
+      this.ws.send(oldVal + ' -> ' + newVal)
+    }
+  },
+  mounted () {
+    console.log('mounted')
+    this.ws = new WebSocket('ws://librae8226-pg.goiot.cc/ws')
+    this.ws.onmessage = this.onMessage
+/*
+    var mymap = L.map('mapid').setView([31.24536, 121.46685], 13)
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+      maxZoom: 18,
+      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+      id: 'mapbox.streets'
+    }).addTo(mymap)
+*/
   },
   computed: {
     finished () {
@@ -64,7 +93,15 @@ export default {
     },
     reset () {
       this.activeStep = 0
+    },
+    onMessage (ev) {
+      console.log(ev.data)
     }
+  },
+  components: {
+    'v-map': Map,
+    'v-tilelayer': TileLayer,
+    'v-marker': Marker
   }
 }
 </script>
@@ -72,8 +109,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .container {
+  /*
   max-width: 380px;
   margin: 16px auto;
+  */
+  margin-top: 4px;
+  height: 90vh;
 }
 .step-button {
   margin-top: 12px;
