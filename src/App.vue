@@ -17,8 +17,8 @@ export default {
 }
 </script>
 
-<style scoped>
-body {
+<style>
+body, html {
   margin: 0;
   height: 100%;
 }
@@ -37,7 +37,7 @@ body {
 
 @media (max-width: 768px) {
   .content {
-    margin: 0 0 56px 0;
+    padding: 0 0 56px 0;
   }
 }
 </style>
