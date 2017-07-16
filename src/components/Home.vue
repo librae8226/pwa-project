@@ -7,8 +7,8 @@
       </el-amap>
     </div>
     <mu-dialog :open="dialog" @close="closeDialog" :title="markerDetails.title">
-      <p>经度: {{markerDetails.data.lng}}</p>
-      <p>纬度: {{markerDetails.data.lat}}</p>
+      <p>经度: {{markers[markerDetails.activeMarker].position[0]}}</p>
+      <p>纬度: {{markers[markerDetails.activeMarker].position[1]}}</p>
       <p>光照: {{markerDetails.data.light}} lux</p>
       <p>温度: {{markerDetails.data.temperature}} ℃</p>
       <mu-flat-button primary label="关闭" @click="closeDialog" slot="actions"/>
@@ -30,6 +30,7 @@ export default {
       lat: 0,
       sensor: {},
       markerDetails: {
+        activeMarker: 0,
         title: '实时数据',
         showCheckbox: false,
         data: {
@@ -45,12 +46,11 @@ export default {
       ],
       markers: [
         {
-          key: 'mk-1',
+          key: 'mk-0',
           position: [121.5273285, 31.21515044],
           events: {
             click: () => {
-              this.markerDetails.data.lng = this.markers[0].position[0]
-              this.markerDetails.data.lat = this.markers[0].position[1]
+              this.markerDetails.activeMarker = 0
               this.openDialog()
             },
             dragend: (e) => {
@@ -59,15 +59,14 @@ export default {
           },
           visible: true,
           draggable: true,
-          title: 'robot 1'
+          title: 'robot 0'
         },
         {
-          key: 'mk-2',
+          key: 'mk-1',
           position: [121.6074416, 31.1912367],
           events: {
             click: () => {
-              this.markerDetails.data.lng = this.markers[1].position[0]
-              this.markerDetails.data.lat = this.markers[1].position[1]
+              this.markerDetails.activeMarker = 1
               this.openDialog()
             },
             dragend: (e) => {
@@ -76,24 +75,20 @@ export default {
           },
           visible: true,
           draggable: true,
-          title: 'robot 2'
+          title: 'robot 1'
         },
         {
-          key: 'mk-3',
-          position: [121.2347983, 31.0609022],
+          key: 'mk-2',
+          position: [121.225835, 31.065199],
           events: {
             click: () => {
-              this.markerDetails.data.lng = this.markers[2].position[0]
-              this.markerDetails.data.lat = this.markers[2].position[1]
+              this.markerDetails.activeMarker = 2
               this.openDialog()
-            },
-            dragend: (e) => {
-              this.markers[2].position = [e.lnglat.lng, e.lnglat.lat]
             }
           },
           visible: true,
-          draggable: true,
-          title: 'robot 3'
+          draggable: false,
+          title: 'robot gps'
         }
       ],
       info: {
@@ -139,8 +134,13 @@ export default {
     this.ws.onmessage = (ev) => {
       let j = JSON.parse(ev.data)
       console.log(j)
-      this.markerDetails.data.light = j.light
-      this.markerDetails.data.temperature = j.temp
+      if (j.type === 'sensor') {
+        this.markerDetails.data.light = j.light
+        this.markerDetails.data.temperature = j.temp
+      } else if (j.type === 'gps') {
+        this.markers[2].position = [parseFloat(j.gpsloc.longitude), parseFloat(j.gpsloc.latitude)]
+      } else {
+      }
     }
     this.ws.onopen = (ev) => {
       this.showSnackbar()
