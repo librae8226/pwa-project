@@ -7,8 +7,9 @@
       </el-amap>
     </div>
     <mu-dialog :open="dialog" @close="closeDialog" :title="markerDetails.title">
-      <p>经度: {{markers[markerDetails.activeMarker].position[0]}}</p>
-      <p>纬度: {{markers[markerDetails.activeMarker].position[1]}}</p>
+      <p>卫星: {{markerDetails.data.satenum}} 颗 {{markerDetails.data.fixed ? "(已定位)" : "(定位中)"}}</p>
+      <p>经度: {{markers[markerDetails.activeMarker].position[0].toFixed(8)}}</p>
+      <p>纬度: {{markers[markerDetails.activeMarker].position[1].toFixed(8)}}</p>
       <p>光照: {{markerDetails.data.light}} lux</p>
       <p>温度: {{markerDetails.data.temperature}} ℃</p>
       <mu-flat-button primary label="关闭" @click="closeDialog" slot="actions"/>
@@ -34,6 +35,8 @@ export default {
         title: '实时数据',
         showCheckbox: false,
         data: {
+          fixed: false,
+          satenum: 0,
           lng: 'N/A',
           lat: 'N/A',
           light: 'N/A',
@@ -57,7 +60,7 @@ export default {
               this.markers[0].position = [e.lnglat.lng, e.lnglat.lat]
             }
           },
-          visible: true,
+          visible: false,
           draggable: true,
           title: 'robot 0'
         },
@@ -73,7 +76,7 @@ export default {
               this.markers[1].position = [e.lnglat.lng, e.lnglat.lat]
             }
           },
-          visible: true,
+          visible: false,
           draggable: true,
           title: 'robot 1'
         },
@@ -138,7 +141,13 @@ export default {
         this.markerDetails.data.light = j.light
         this.markerDetails.data.temperature = j.temp
       } else if (j.type === 'gps') {
-        this.markers[2].position = [parseFloat(j.gpsloc.longitude), parseFloat(j.gpsloc.latitude)]
+        this.markerDetails.data.satenum = j.satenum
+        if (parseInt(j.isfix) === 1) {
+          this.markerDetails.data.fixed = true
+          this.markers[2].position = [parseFloat(j.gpsloc.longitude), parseFloat(j.gpsloc.latitude)]
+        } else {
+          this.markerDetails.data.fixed = false
+        }
       } else {
       }
     }
